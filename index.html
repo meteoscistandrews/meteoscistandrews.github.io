@@ -3,59 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ESP32 Sensor Dashboard</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Temperature Chart</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-        h2 { color: #333; }
-        #chart-container { width: 80%; margin: auto; }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            color: #333;
+        }
+        iframe {
+            border: 1px solid #cccccc;
+        }
     </style>
 </head>
 <body>
-    <h2>ESP32 Sensor Dashboard</h2>
-    <div id="chart-container">
-        <canvas id="chart"></canvas>
-    </div>
-    <script>
-        async function fetchData() {
-            // Replace 'http://<192.168.1.34>/data' with the actual IP address of your ESP32
-            const response = await fetch('http://192.168.1.34//data');
-            const jsonData = await response.json();
-            return jsonData;
-        }
-
-        async function updateChart(chart) {
-            const data = await fetchData();
-            chart.data.datasets[0].data = data.temperature;
-            chart.data.datasets[1].data = data.humidity;
-            chart.update();
-        }
-
-        const ctx = document.getElementById('chart').getContext('2d');
-        const chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: Array.from({length: 168}, (_, i) => i + "h ago"),
-                datasets: [{
-                    label: 'Temperature (°C)',
-                    borderColor: 'rgb(255, 99, 132)',
-                    data: []
-                }, {
-                    label: 'Humidity (%)',
-                    borderColor: 'rgb(54, 162, 235)',
-                    data: []
-                }]
-            },
-            options: {
-                scales: {
-                    x: { title: { display: true, text: 'Hours Ago' } },
-                    y: { title: { display: true, text: 'Values' } }
-                }
-            }
-        });
-
-        setInterval(() => updateChart(chart), 4000);
-    </script>
+    <h1>Real-Time Temperature Chart</h1>
+    <iframe width="450" height="260" src="https://thingspeak.com/channels/2716070/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Temperature&type=line&xaxis=Time&yaxis=Temperature+%28%C2%BAC%29"></iframe>
+    <p>Data provided by ThingSpeak</p>
 </body>
 </html>
-
