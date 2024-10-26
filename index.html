@@ -1,61 +1,61 @@
-<html><head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-  <style>
-    html {
-     font-family: Arial;
-     display: inline-block;
-     margin: 0px auto;
-     text-align: center;
-    }
-    h2 { font-size: 3.0rem; }
-    p { font-size: 3.0rem; }
-    .units { font-size: 1.2rem; }
-    .dht-labels{
-      font-size: 1.5rem;
-      vertical-align:middle;
-      padding-bottom: 15px;
-    }
-  </style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP32 Sensor Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        h2 { color: #333; }
+        #chart-container { width: 80%; margin: auto; }
+    </style>
 </head>
 <body>
-  <h2>ESP32 DHT Server</h2>
-  <p>
-    <i class="fas fa-thermometer-half" style="color:#059e8a;"></i> 
-    <span class="dht-labels">Temperature</span> 
-    <span id="temperature">36</span>
-    <sup class="units">°C</sup>
-  </p>
-  <p>
-    <i class="fas fa-tint" style="color:#00add6;"></i> 
-    <span class="dht-labels">Humidity</span>
-    <span id="humidity">61%</span>
-    <sup class="units">%</sup>
-  </p>
+    <h2>ESP32 Sensor Dashboard</h2>
+    <div id="chart-container">
+        <canvas id="chart"></canvas>
+    </div>
+    <script>
+        async function fetchData() {
+            // Replace 'http://<192.168.1.34>/data' with the actual IP address of your ESP32
+            const response = await fetch('http://192.168.1.34//data');
+            const jsonData = await response.json();
+            return jsonData;
+        }
 
+        async function updateChart(chart) {
+            const data = await fetchData();
+            chart.data.datasets[0].data = data.temperature;
+            chart.data.datasets[1].data = data.humidity;
+            chart.update();
+        }
 
-)
-</body><!--<script>
-setInterval(function ( ) {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("temperature").innerHTML = this.responseText;
-    }
-  };
-  xhttp.open("GET", "/temperature", true);
-  xhttp.send();
-}, 10000 ) ;
+        const ctx = document.getElementById('chart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: Array.from({length: 168}, (_, i) => i + "h ago"),
+                datasets: [{
+                    label: 'Temperature (°C)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: []
+                }, {
+                    label: 'Humidity (%)',
+                    borderColor: 'rgb(54, 162, 235)',
+                    data: []
+                }]
+            },
+            options: {
+                scales: {
+                    x: { title: { display: true, text: 'Hours Ago' } },
+                    y: { title: { display: true, text: 'Values' } }
+                }
+            }
+        });
 
-setInterval(function ( ) {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("humidity").innerHTML = this.responseText;
-    }
-  };
-  xhttp.open("GET", "/humidity", true);
-  xhttp.send();
-}, 10000 ) ;
-</script>
-!--></html>
+        setInterval(() => updateChart(chart), 4000);
+    </script>
+</body>
+</html>
+
