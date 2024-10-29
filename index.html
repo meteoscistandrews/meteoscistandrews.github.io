@@ -3,29 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Temperature Chart</title>
+    <title>Sensor Data Table</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f9f9f9;
+        table {
+            width: 100%;
+            border-collapse: collapse;
         }
-        h1 {
-            color: #333;
+        table, th, td {
+            border: 1px solid black;
         }
-        iframe {
-            border: 1px solid #cccccc;
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
         }
     </style>
 </head>
 <body>
-    <h1>Real-Time Temperature Chart</h1>
-    <iframe width="450" height="260" src="https://thingspeak.com/channels/2716070/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Temperature&type=line&xaxis=Time&yaxis=Temperature+%28%C2%BAC%29"></iframe>
-    <p>Data provided by ThingSpeak</p>
+
+    <h2>Sensor Data Table</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Entry ID</th>
+                <th>Timestamp (UTC)</th>
+                <th>Temperature (°C)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>6259</td>
+                <td>2024-10-29T13:10:09Z</td>
+                <td>22.1</td>
+            </tr>
+            <tr>
+                <td>6260</td>
+                <td>2024-10-29T13:10:40Z</td>
+                <td>22.1</td>
+            </tr>
+            <tr>
+                <td>6261</td>
+                <td>2024-10-29T13:11:11Z</td>
+                <td>22.1</td>
+            </tr>
+            <tr>
+                <td>6262</td>
+                <td>2024-10-29T13:11:41Z</td>
+                <td>22.1</td>
+            </tr>
+            <tr>
+                <td>6263</td>
+                <td>2024-10-29T13:12:12Z</td>
+                <td>22.0</td>
+            </tr>
+            <!-- Add more rows as needed -->
+        </tbody>
+    </table>
+
 </body>
 </html>
+
